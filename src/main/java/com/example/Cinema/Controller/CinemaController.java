@@ -29,13 +29,22 @@ public class CinemaController {
 
     @GetMapping("/cinema")
     public String getCinema() {
-
         return cinemas.toString();
     }
 
     @GetMapping("/cinema/{id}")
-    public String getCinemaById(@PathVariable int id) {
-        return cinemas.get(id);
+    public String getCinemaById(@PathVariable int id)  {
+        if (id >= 0 && id < cinemas.size()) {
+            return cinemas.get(id);
+        } else {
+            ObjectConstructor objectConstructor = new ObjectConstructor("Not Found", "Cinema Not Found");
+            try {
+                return objectMapper.writeValueAsString(objectConstructor);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Error processing JSON", e);
+            }
+        }
+//        return cinemas.get(id);
     }
 
 
@@ -46,15 +55,14 @@ public class CinemaController {
         String jsonText= null;
         ObjectConstructor Error = new ObjectConstructor("Error", "Not all parameters are valid");
 
-        if(cinemaName.equals(new String(""))
-                || genre.equals(new String(""))
-                || date.equals(new String(""))) {
+        if(cinemaName.isEmpty()
+                || genre.isEmpty()
+                || date.isEmpty()) {
             jsonText = objectMapper.writeValueAsString(Error);
             return jsonText;
         }
 
         int size = cinemas.size();
-
         try {
             Cinema cinema = new Cinema(size, cinemaName, genre, date);
             jsonText = objectMapper.writeValueAsString(cinema);
