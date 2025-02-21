@@ -2,11 +2,13 @@ package com.example.Cinema.Controller;
 
 
 import com.example.Cinema.Entities.Cinema;
+import com.example.Cinema.Entities.ObjectConstructor;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class CinemaController {
 
     @GetMapping("/cinema")
     public String getCinema() {
+
         return cinemas.toString();
     }
 
@@ -41,12 +44,12 @@ public class CinemaController {
                              @RequestParam String genre,
                              @RequestParam String date) throws JsonProcessingException {
         String jsonText= null;
-
+        ObjectConstructor Error = new ObjectConstructor("Error", "Not all parameters are valid");
 
         if(cinemaName.equals(new String(""))
                 || genre.equals(new String(""))
                 || date.equals(new String(""))) {
-            jsonText = objectMapper.writeValueAsString("Sorry but need to validete all values");
+            jsonText = objectMapper.writeValueAsString(Error);
             return jsonText;
         }
 
