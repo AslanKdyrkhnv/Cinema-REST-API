@@ -30,6 +30,11 @@ public class CinemaController {
         return cinemas.toString();
     }
 
+    @GetMapping("/cinema/{id}")
+    public String getCinemaById(@PathVariable int id) {
+        return cinemas.get(id);
+    }
+
 
     @PostMapping("/cinema")
     public String postCinema(@RequestParam String cinemaName,
